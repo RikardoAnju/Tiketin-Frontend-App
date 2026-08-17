@@ -4,18 +4,28 @@ class AppImages {
   static const String _base = 'assets/images';
 
   // Logo
-  static const String logo = '$_base/logo/logo.png';
-  static const String logoWhite = '$_base/logo/logo_white.png';
+  static const String logoTiketin = '$_base/logo/logo_tiketin.webp';
+  static const String logoAppIcon = '$_base/logo/logo_app_icon.webp';
+  static const String logoGoogle = '$_base/logo/logo_google.png';
 
-  // Icons
-  static const String iconTicket = '$_base/icons/ic_ticket.png';
-  static const String iconLocation = '$_base/icons/ic_location.png';
-  static const String iconCalendar = '$_base/icons/ic_calendar.png';
+  // Icons — event category icons
+  static const String icCategory = '$_base/icons/ic_category.webp';
+  static const String icMusic = '$_base/icons/ic_music.webp';
+  static const String icCelebration = '$_base/icons/ic_celebration.webp';
+  static const String icMicrophone = '$_base/icons/ic_microphone.webp';
+  static const String icSport = '$_base/icons/ic_sport.webp';
+  static const String icFlight = '$_base/icons/ic_flight.webp';
+  static const String icTrain = '$_base/icons/ic_train.webp';
+  static const String icBus = '$_base/icons/ic_bus.webp';
+  static const String icShip = '$_base/icons/ic_ship.webp';
+  static const String icTicket = '$_base/icons/ic_ticket.webp';
 
   // Banners
-  static const String bannerPromo = '$_base/banners/banner_promo.png';
+  static const String bgDefault = '$_base/banners/bg_default.webp';
+  static const String bgAtas = '$_base/banners/bg_atas.png';
 
   // Placeholders
-  static const String eventPlaceholder = '$_base/placeholders/event_placeholder.png';
-  static const String avatarPlaceholder = '$_base/placeholders/avatar_placeholder.png';
+  static const String illustrationPlaceholder = '$_base/placeholders/illustration_placeholder.webp';
+  static const String searchMockupPlaceholder = '$_base/placeholders/search_mockup_placeholder.webp';
+  static const String ticketMockupPlaceholder = '$_base/placeholders/ticket_mockup_placeholder.webp';
 }

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'core/routes/app_routes.dart';
 import 'core/theme/app_theme.dart';
-import 'features/auth/presentation/providers/auth_provider.dart';
-import 'features/event/presentation/providers/event_provider.dart';
-import 'features/ticket/presentation/providers/ticket_provider.dart';
+import 'providers/auth_provider.dart';
+import 'providers/event_provider.dart';
+import 'providers/ticket_provider.dart';
 
 class TiketinApp extends StatelessWidget {
   const TiketinApp({super.key});
@@ -21,7 +21,7 @@ class TiketinApp extends StatelessWidget {
         title: 'Tiketin',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
-        initialRoute: AppRoutes.home,
+        initialRoute: AppRoutes.splash,
         routes: AppRoutes.routes,
       ),
     );

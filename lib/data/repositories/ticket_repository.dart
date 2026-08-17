@@ -1,5 +1,5 @@
-import '../../../../core/constants/api_constants.dart';
-import '../../../../core/network/api_client.dart';
+import '../../core/constants/api_constants.dart';
+import '../../core/network/api_client.dart';
 import '../models/ticket_model.dart';
 
 class TicketRepository {

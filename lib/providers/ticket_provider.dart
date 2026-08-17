@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import '../../data/models/ticket_model.dart';
-import '../../data/repositories/ticket_repository.dart';
+import '../data/models/ticket_model.dart';
+import '../data/repositories/ticket_repository.dart';
 
 class TicketProvider extends ChangeNotifier {
   final TicketRepository _repository;
