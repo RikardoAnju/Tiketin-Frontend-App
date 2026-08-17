@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
-import '../../data/models/event_model.dart';
-import '../../data/repositories/event_repository.dart';
+import '../data/dummy_events.dart';
+import '../data/models/event_model.dart';
+import '../data/repositories/event_repository.dart';
 
 class EventProvider extends ChangeNotifier {
   final EventRepository _repository;
@@ -23,7 +24,10 @@ class EventProvider extends ChangeNotifier {
       _events = await _repository.getEvents();
       _errorMessage = null;
     } catch (e) {
-      _errorMessage = e.toString();
+      // Backend not reachable yet — fall back to local dummy data
+      // so the UI stays usable during frontend-only development.
+      _events = dummyEvents;
+      _errorMessage = null;
     } finally {
       _setLoading(false);
     }
