@@ -1,0 +1,33 @@
+# Fly.io configuration for TIKETIN Go Backend
+app = "tiketin-api"
+primary_region = "sin"
+
+[build]
+builder = "docker"
+
+[env]
+PORT = "3000"
+
+[[services]]
+internal_port = 3000
+processes = ["app"]
+
+  [[services.ports]]
+  port = 80
+  handlers = ["http"]
+  force_https = true
+
+  [[services.ports]]
+  port = 443
+  handlers = ["tls", "http"]
+
+[checks]
+  [checks.http]
+  grace_period = "10s"
+  interval = "10s"
+  min_consecutive_ok = 1
+  min_consecutive_failure = 3
+  method = "GET"
+  path = "/api/health"
+  protocol = "http"
+  timeout = "5s"

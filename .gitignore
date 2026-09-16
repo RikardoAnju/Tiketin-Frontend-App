@@ -43,3 +43,18 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Node.js / Next.js (frontend)
+node_modules/
+.next/
+out/
+.env
+.env.local
+.env*.local
+npm-debug.log*
+
+# Go (backend)
+backend/tiketin-api
+backend/*.exe
+backend/tmp/
+*.env
