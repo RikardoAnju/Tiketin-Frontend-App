@@ -5,6 +5,7 @@ import { Plane, Train, Bus, Ship, Hotel, Clapperboard } from "lucide-react";
 interface SearchWidgetProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  onSearch?: () => void;
 }
 
 const tabs = [
@@ -16,13 +17,18 @@ const tabs = [
   { id: "bioskop", icon: Clapperboard, label: "Bioskop" },
 ];
 
-export function SearchWidget({ activeTab, onTabChange }: SearchWidgetProps) {
+export function SearchWidget({
+  activeTab,
+  onTabChange,
+  onSearch,
+}: SearchWidgetProps) {
   return (
     <div className="search-widget">
       <div className="search-tabs">
         {tabs.map(({ id, icon: Icon, label }) => (
           <button
             key={id}
+            type="button"
             className={`search-tab ${activeTab === id ? "active" : ""}`}
             onClick={() => onTabChange(id)}
           >
@@ -32,10 +38,20 @@ export function SearchWidget({ activeTab, onTabChange }: SearchWidgetProps) {
         ))}
       </div>
 
-      <form className="search-form simple-grid">
+      <form
+        className="search-form simple-grid"
+        onSubmit={(event) => {
+          event.preventDefault();
+          onSearch?.();
+        }}
+      >
         <div className="search-field">
           <span>DESTINASI</span>
-          <input type="text" placeholder="Kota, hotel, atau area" defaultValue="Bali" />
+          <input
+            type="text"
+            placeholder="Kota, hotel, atau area"
+            defaultValue="Bali"
+          />
         </div>
         <div className="search-field">
           <span>CHECK-IN</span>
@@ -49,7 +65,9 @@ export function SearchWidget({ activeTab, onTabChange }: SearchWidgetProps) {
           <span>KAMAR & TAMU</span>
           <input type="text" placeholder="1 kamar, 2 tamu" />
         </div>
-        <button type="submit" className="search-submit">🔍 Cari Hotel</button>
+        <button type="submit" className="search-submit">
+          🔍 Cari Hotel
+        </button>
       </form>
     </div>
   );

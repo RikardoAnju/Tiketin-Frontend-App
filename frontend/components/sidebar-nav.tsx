@@ -1,6 +1,16 @@
 "use client";
 
-import { BedDouble, Plane, Train, Bus, Ship, Clapperboard, Calendar, Tag } from "lucide-react";
+import {
+  House,
+  BedDouble,
+  Plane,
+  Train,
+  Bus,
+  Ship,
+  Clapperboard,
+  Calendar,
+  Tag,
+} from "lucide-react";
 
 interface SidebarNavProps {
   active: string;
@@ -10,6 +20,7 @@ interface SidebarNavProps {
 }
 
 const items = [
+  { id: "home", icon: House, label: "Beranda" },
   { id: "hotel", icon: BedDouble, label: "Hotel" },
   { id: "pesawat", icon: Plane, label: "Pesawat" },
   { id: "kereta", icon: Train, label: "Kereta" },
@@ -20,14 +31,22 @@ const items = [
   { id: "promo", icon: Tag, label: "Promo" },
 ];
 
-export function SidebarNav({ active, onSelect, collapsed, onToggleCollapse }: SidebarNavProps) {
+export function SidebarNav({
+  active,
+  onSelect,
+  collapsed,
+  onToggleCollapse,
+}: SidebarNavProps) {
   return (
     <aside className={collapsed ? "sidebar-nav collapsed" : "sidebar-nav"}>
-      <button className="sidebar-toggle" onClick={onToggleCollapse}>☰</button>
+      <button className="sidebar-toggle" onClick={onToggleCollapse}>
+        ☰
+      </button>
       <nav>
         {items.map(({ id, icon: Icon, label }) => (
           <button
             key={id}
+            type="button"
             className={`sidebar-item ${active === id ? "active" : ""}`}
             onClick={() => onSelect(id)}
           >

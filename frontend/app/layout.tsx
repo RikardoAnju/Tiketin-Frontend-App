@@ -3,7 +3,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Tiketin - Pesan Tiket Perjalanan dan Hiburan",
-  description: "Platform perjalanan all-in-one untuk semua kebutuhan tiket pesawat, kereta, bus, kapal, event, dan wisata.",
+  description:
+    "Platform perjalanan all-in-one untuk semua kebutuhan tiket pesawat, kereta, bus, kapal, event, dan wisata.",
 };
 
 export default function RootLayout({

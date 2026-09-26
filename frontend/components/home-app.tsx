@@ -1,66 +1,101 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import { BadgeCheck, ShieldCheck, Ticket, BedDouble, Plane, Clapperboard, ArrowUpRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { SidebarNav } from "@/components/sidebar-nav";
-import { SearchWidget } from "@/components/search-widget";
-import { images } from "@/utils/images";
-import { gradients } from "@/utils/colors";
-
-const promos = [
-  { icon: BedDouble, gradient: gradients.hotel, title: "Diskon Hotel hingga 40%", text: "Nikmati liburan lebih hemat di ribuan hotel pilihan." },
-  { icon: Plane, gradient: gradients.pesawat, title: "Tiket Pesawat Promo", text: "Terbang ke seluruh Indonesia dengan harga spesial." },
-  { icon: Clapperboard, gradient: gradients.bioskop, title: "Nonton Jadi Murah", text: "Dapatkan cashback tiket bioskop setiap akhir pekan." },
-];
+import Loading from "@/utils/loading";
+import { TravelHome } from "./home/travel-home";
+import { CinemaHome, MovieShelf } from "./home/cinema-home";
+import { ServiceShowcase } from "./home/service-showcase";
+import { HomeLanding } from "./home/home-landing";
+import { HomeLandingSkeleton } from "./home/home-landing-skeleton";
 
 export function HomeApp() {
-  const [activeSidebar, setActiveSidebar] = useState("hotel");
+  const router = useRouter();
+  const [activeSidebar, setActiveSidebar] = useState("home");
   const [collapsed, setCollapsed] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
+  useEffect(() => {
+    const navigation = performance.getEntriesByType("navigation")[0] as
+      | PerformanceNavigationTiming
+      | undefined;
+    if (navigation?.type !== "reload") return;
+    setIsInitializing(true);
+    const timer = window.setTimeout(() => setIsInitializing(false), 500);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  const handleSearch = () => {
+    setIsSearching(true);
+    window.setTimeout(
+      () =>
+        router.push(
+          `/search?type=${activeSidebar === "home" ? "hotel" : activeSidebar}`,
+        ),
+      650,
+    );
+  };
+
+  const isCinema = activeSidebar === "bioskop";
   return (
-    <div className={collapsed ? "app-body sidebar-collapsed" : "app-body"}>
-      <SidebarNav active={activeSidebar} onSelect={setActiveSidebar} collapsed={collapsed} onToggleCollapse={() => setCollapsed((v) => !v)} />
-
-      <main className="app-main">
-        <section className="trip-hero">
-          <div className="trip-hero-content">
-            <span className="hero-kicker">Platform tiket #1 untuk semua perjalananmu</span>
-            <h1>Satu Aplikasi,<br /><span className="hero-accent">Segala Perjalanan.</span></h1>
-
-            <div className="trust-badges">
-              <span><ShieldCheck size={15} strokeWidth={2.3} /> Harga terbaik terjamin</span>
-              <span><BadgeCheck size={15} strokeWidth={2.3} /> Tiket terkonfirmasi instan</span>
-              <span><Ticket size={15} strokeWidth={2.3} /> Refund mudah & cepat</span>
-            </div>
-          </div>
-
-          <SearchWidget activeTab="hotel" onTabChange={setActiveSidebar} />
-
-          <div className="hero-travel-full">
-            <Image
-              src={images.banner.heroIllustration}
-              alt="Pesawat, kereta, bus, dan kapal sebagai layanan Tiketin"
-              width={1359}
-              height={492}
-              priority
-            />
-          </div>
-        </section>
-
-        <section className="promo-strip">
-          {promos.map(({ icon: Icon, gradient, title, text }) => (
-            <article className="promo-card" key={title}>
-              <span className="promo-icon" style={{ background: gradient }}><Icon size={22} strokeWidth={2.2} color="#fff" /></span>
-              <div>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </div>
-              <ArrowUpRight className="promo-arrow" size={18} strokeWidth={2.2} />
-            </article>
-          ))}
-        </section>
-      </main>
-    </div>
+    <>
+      {isSearching && (
+        <Loading variant="overlay" label="Mencari pilihan terbaik..." />
+      )}
+      <div className={collapsed ? "app-body sidebar-collapsed" : "app-body"}>
+        {activeSidebar === "home" && (
+          <SidebarNav
+            active={activeSidebar}
+            onSelect={setActiveSidebar}
+            collapsed={collapsed}
+            onToggleCollapse={() => setCollapsed((value) => !value)}
+          />
+        )}
+        {activeSidebar !== "home" && !isCinema && (
+          <TravelHome
+            activeTab={activeSidebar}
+            sidebarActive={activeSidebar}
+            onTabChange={setActiveSidebar}
+            onSearch={handleSearch}
+            collapsed={collapsed}
+            onToggle={() => setCollapsed((value) => !value)}
+            showSearch
+          />
+        )}
+        {isCinema && (
+          <SidebarNav
+            active={activeSidebar}
+            onSelect={setActiveSidebar}
+            collapsed={collapsed}
+            onToggleCollapse={() => setCollapsed((value) => !value)}
+          />
+        )}
+        <main className={`app-main ${isCinema ? "cinema-mode" : ""}`}>
+          {isInitializing ? (
+            <HomeLandingSkeleton />
+          ) : (
+            <>
+              {isCinema && <CinemaHome onSearch={handleSearch} />}
+              {activeSidebar === "home" && (
+                <HomeLanding onSelect={setActiveSidebar} />
+              )}
+              {!isCinema && activeSidebar !== "home" && (
+                <>
+                  <ServiceShowcase onSelect={setActiveSidebar} />
+                  <MovieShelf
+                    onSearch={() => {
+                      setActiveSidebar("bioskop");
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                  />
+                </>
+              )}
+            </>
+          )}
+        </main>
+      </div>
+    </>
   );
 }
