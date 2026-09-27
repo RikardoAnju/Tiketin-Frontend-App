@@ -1,12 +1,11 @@
-import { useState, type CSSProperties } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import {
   ArrowUpRight,
+  Clapperboard,
   Play,
   Star,
   Ticket,
-  ChevronRight,
-  ChevronLeft,
 } from "lucide-react";
 import { cinemaPosters } from "./home-data";
 
@@ -55,56 +54,55 @@ export function CinemaHome({ onSearch }: { onSearch: () => void }) {
 }
 
 export function MovieShelf({ onSearch }: { onSearch: () => void }) {
-  const [activeSlide, setActiveSlide] = useState(0);
-  const maxSlide = Math.max(0, cinemaPosters.length - 4);
+  const [activeGenre, setActiveGenre] = useState("Semua");
+  const genres = ["Semua", "Horror", "Adventure", "Fantasy", "Now Playing"];
+  const filteredMovies = cinemaPosters.filter(
+    (movie) => activeGenre === "Semua" || movie.genre === activeGenre,
+  );
+  const featuredMovie = cinemaPosters[2];
 
   return (
     <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:px-12">
-      <div className="flex flex-wrap items-end justify-between gap-5">
-        <div>
-          <span className="text-xs font-extrabold uppercase tracking-[.16em] text-pink-600">
-            Rekomendasi bioskop
+      <div className="relative isolate overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-blue-950/5 sm:p-8">
+        <div className="absolute -right-12 -top-16 -z-10 h-48 w-48 rounded-full bg-pink-200/40 blur-3xl" />
+        <div className="absolute -left-10 bottom-0 -z-10 h-32 w-32 rounded-full bg-blue-200/40 blur-2xl" />
+        <div className="relative flex flex-wrap items-end justify-between gap-5">
+          <div>
+            <span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[.16em] text-pink-600">
+              <Clapperboard size={15} /> Rekomendasi bioskop
+            </span>
+            <h2 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+              Film yang sedang tayang
+            </h2>
+            <p className="mt-2 text-sm text-slate-500">
+              Pilih film favoritmu dan pesan kursi bioskop dengan cepat.
+            </p>
+          </div>
+
+          <span className="inline-flex items-center gap-2 rounded-full border border-pink-100 bg-pink-50 px-4 py-2 text-xs font-bold text-pink-600">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-pink-500" />
+            {filteredMovies.length} film tersedia
           </span>
-          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-950">
-            Film yang sedang tayang
-          </h2>
-          <p className="mt-2 text-sm text-slate-500">
-            Pilih film favoritmu dan pesan kursi bioskop dengan cepat.
-          </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:border-blue-300 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
-            type="button"
-            aria-label="Film sebelumnya"
-            disabled={activeSlide === 0}
-            onClick={() => setActiveSlide((slide) => Math.max(0, slide - 1))}
-          >
-            <ChevronLeft size={18} />
-          </button>
-          <button
-            className="grid h-10 w-10 place-items-center rounded-xl bg-slate-950 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
-            type="button"
-            aria-label="Film berikutnya"
-            disabled={activeSlide === maxSlide}
-            onClick={() =>
-              setActiveSlide((slide) => Math.min(maxSlide, slide + 1))
-            }
-          >
-            <ChevronRight size={18} />
-          </button>
+        <div className="relative mt-7 flex gap-2 overflow-x-auto rounded-2xl bg-slate-950 p-2 shadow-inner [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {genres.map((genre) => (
+            <button
+              key={genre}
+              type="button"
+              onClick={() => setActiveGenre(genre)}
+              className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-bold transition ${activeGenre === genre ? "bg-amber-300 text-slate-950 shadow-lg shadow-amber-300/20" : "text-slate-300 hover:bg-white/10 hover:text-white"}`}
+            >
+              {genre}
+            </button>
+          ))}
         </div>
       </div>
 
-      <div className="mt-8 overflow-hidden">
-        <div
-          className="flex gap-5 transition-transform duration-500 ease-out"
-          style={{ transform: `translateX(-${activeSlide * 230}px)` }}
-        >
-          {cinemaPosters.map((movie) => (
+      <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          {filteredMovies.map((movie) => (
             <article
-              className="group relative aspect-[2/3] w-[210px] shrink-0 overflow-hidden rounded-3xl bg-slate-950 shadow-lg shadow-slate-900/15 transition duration-300 hover:-translate-y-2 hover:shadow-2xl"
+              className={`group relative aspect-[2/3] overflow-hidden rounded-3xl bg-slate-950 shadow-lg shadow-slate-900/15 transition duration-300 hover:-translate-y-2 hover:shadow-2xl ${movie === featuredMovie ? "ring-2 ring-amber-300 shadow-xl shadow-amber-400/30" : ""}`}
               key={movie.src}
             >
               <div className="absolute inset-0">
@@ -117,9 +115,13 @@ export function MovieShelf({ onSearch }: { onSearch: () => void }) {
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/25 to-transparent" />
-              <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[10px] font-extrabold text-slate-900">
-                {movie.genre}
-              </span>
+              {movie === featuredMovie && (
+                <>
+                  <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-amber-300 px-3 py-1.5 text-[10px] font-extrabold text-slate-950 shadow-lg shadow-amber-500/40">
+                    Pilihan minggu ini
+                  </span>
+                </>
+              )}
               <div className="absolute inset-x-0 bottom-0 p-4 text-white">
                 <h3 className="line-clamp-2 text-lg font-extrabold leading-tight">
                   {movie.title}
@@ -142,7 +144,6 @@ export function MovieShelf({ onSearch }: { onSearch: () => void }) {
               </div>
             </article>
           ))}
-        </div>
       </div>
     </section>
   );
