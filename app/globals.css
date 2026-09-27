@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap');
+@import "tailwindcss";
+@import "./styles/app.css";
+
+:root {
+  color-scheme: light;
+  --font-body: "Manrope", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  --font-heading: "Outfit", "Segoe UI Variable", system-ui, sans-serif;
+  --font-display: "Outfit", "Segoe UI Variable", system-ui, sans-serif;
+  --color-primary: #0866f5;
+  --color-navy: #10234d;
+  --color-accent: #ff7600;
+  --color-muted: #53627b;
+  --color-line: #e4ebf5;
+  --color-surface: #ffffff;
+  --color-page: #f6f8fc;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--color-navy);
+  background: var(--color-surface);
+  font-family: var(--font-body);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+p { color: var(--color-muted); line-height: 1.65; }
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
