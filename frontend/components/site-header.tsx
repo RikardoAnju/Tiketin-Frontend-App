@@ -21,7 +21,7 @@ export function SiteHeader() {
         <Link href="/">Jadi Partner</Link>
       </nav>
       <Link href="/login" className="login-link">
-        Masuk
+        Masuk+
       </Link>
     </header>
   );

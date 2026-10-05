@@ -10,8 +10,8 @@ export default function LoadingPage() {
           <span className="h-4 w-14 animate-pulse rounded bg-slate-100" />
           <span className="h-4 w-20 animate-pulse rounded bg-slate-100" />
         </div>
-        <span className="h-11 w-24 animate-pulse rounded-xl bg-blue-100" />
-      </header>
+        <span className="h-11 w-24 animate-pulse -xl bg-blue-100" />
+      </header>rounded
       <aside className="fixed bottom-0 left-0 top-[84px] w-24 border-r border-slate-200 bg-white p-4">
         <div className="space-y-6">
           {Array.from({ length: 7 }, (_, index) => (
